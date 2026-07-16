@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: system-siege-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: system-siege-db
+          property: connectionURI
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://gfg-hackathon-alpha.vercel.app
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+databases:
+  - name: system-siege-db
+    plan: free
+    databaseName: sysiege
